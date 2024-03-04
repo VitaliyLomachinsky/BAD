@@ -8,17 +8,8 @@ namespace BAD.DataProcess
 {
     internal class MedianCalculation
     {
-        decimal[] data_array;
-
-        public MedianCalculation(decimal[] data_array)
+        public decimal ReturnMedian(decimal[] data_array)
         {
-            this.data_array = 
-        }
-
-        public decimal ReturnMedian()
-        {
-            Array.Sort(data_array);
-
             if (data_array.Length % 2 == 0)
             {
                 return ReturnMedianForEvenArray(data_array);

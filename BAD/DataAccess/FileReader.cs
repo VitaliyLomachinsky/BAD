@@ -10,9 +10,15 @@ namespace BAD.DataAccess
     internal class FileReader
     {
         public string[] ReadFileByName(string file_name)
-        { 
-            string[] lines = File.ReadAllLines(file_name);
-            return lines;
+        {
+            try
+            {
+                string[] lines = File.ReadAllLines(file_name);
+                return lines;
+            }
+            catch(Exception eror) {
+                return [];
+            }
         }
     }
 }

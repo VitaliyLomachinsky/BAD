@@ -8,37 +8,52 @@ namespace BAD.DataProcess
 {
     internal class SequenceCounter
     {
-        List<decimal> final_sequence_of_grows_numbers = new List<decimal>();
-        List<decimal> temp_sequence_of_grows_numbers = new List<decimal>();
+        decimal[] data_array;
 
+        List<decimal> sequence_of_increasing_numbers = new List<decimal>();
+        List<decimal> sequence_of_decreasing_numbers = new List<decimal>();
 
-        public void CalculateGrowthSequence(decimal[] data_array)
+        public SequenceCounter(decimal[] data)
         {
-            IfArrayEmptyInitialByNextNumber(temp_sequence_of_grows_numbers, data_array[0]);
+            data_array =data;
+        }
+        public void CalculateSequences(decimal[] data_array)
+        {
+            InitialListsByFirstNumber();
+            List<decimal> temp_increase = new List<decimal>();
+            List<decimal> temp_decrease = new List<decimal>();
 
             for (int i = 0; i < data_array.Length; i++)
             {
-                if (temp_sequence_of_grows_numbers.Last() < data_array[i])
+                if (temp_sequence_of_increase_numbers.Last() < data_array[i])
                 {
-                    temp_sequence_of_grows_numbers.Add(data_array[i]);
+                    temp_sequence_of_increase_numbers.Add(data_array[i]);
                 }
                 else
                 {
                     ChangeFinalSequenceIfTempIsBigger();
-                    temp_sequence_of_grows_numbers.Clear();
-                    IfArrayEmptyInitialByNextNumber(temp_sequence_of_grows_numbers, data_array[i]);
+                    temp_sequence_of_increase_numbers.Clear();
+                    IfArrayEmptyInitialByNextNumber(temp_sequence_of_increase_numbers, data_array[i]);
                 }
             }
             ChangeFinalSequenceIfTempIsBigger();
-            temp_sequence_of_grows_numbers = null;
+        }
+        private void InitialListsByFirstNumber()
+        {
+            sequence_of_increasing_numbers.Add(data_array[0]);
+            sequence_of_decreasing_numbers.Add(data_array[0]);
+        }
+        private void IncreaseCounter(List<decimal> temp_increase,decimal number)
+        {
+            if (temp_increase.Last() < number)
+            {
+                temp_increase.Add(number);
+            }
         }
 
-        private void IfArrayEmptyInitialByNextNumber(List<decimal> array, decimal number)
+        private void DecreaseCounter(decimal number)
         {
-            if (array.Count == 0)
-            {
-                array.Add(number);
-            }
+
         }
 
         private void ChangeFinalSequenceIfTempIsBigger()
@@ -49,12 +64,14 @@ namespace BAD.DataProcess
             }
         }
 
-        public void PrintGrowsSequence()
+        public List<decimal> ReturnIncreasingSequence()
         {
-            foreach (decimal number in final_sequence_of_grows_numbers)
-            {
-                Console.WriteLine(number);
-            }
+            return final_sequence_of_increase_numbers;
+        }
+
+        public List<decimal> ReturnDecreasingSequence()
+        {
+            return final_sequence_of_decrease_numbers;
         }
     }
 }
