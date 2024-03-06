@@ -24,7 +24,7 @@ namespace BAD.DataProcess
             sequence_counter = new SequenceCounter(data_array);
             median_calculation = new MedianCalculation();
 
-            sequence_counter.CalculateSequence(data_array);//need unsorted array for calculation
+           
 
             Array.Sort(data_array);
 
@@ -48,7 +48,15 @@ namespace BAD.DataProcess
             foreach (decimal item in ReturnLongestIncreasingSequence()) {
                 Console.WriteLine(item);
             }
-            
+
+            Console.WriteLine("\n" + "Longest decreasing sequence:");
+            foreach (decimal item in ReturnLongestDecreasingSequence())
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.ReadLine();
+
         }
 
         private decimal ReturnMinValue()
@@ -73,11 +81,11 @@ namespace BAD.DataProcess
         }
         private List<decimal> ReturnLongestIncreasingSequence()
         {
-            return sequence_counter.ReturnGrowsSequence();
+            return sequence_counter.ReturnIncreasingSequence();
         }
-        private decimal ReturnLongestDecreasingSequence()
+        private List<decimal> ReturnLongestDecreasingSequence()
         {
-            return sequence_counter.Re();
+            return sequence_counter.ReturnDecreasingSequence();
         }
 
     }

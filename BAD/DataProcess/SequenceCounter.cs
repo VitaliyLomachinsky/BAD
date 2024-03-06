@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BAD.DataProcess
 {
@@ -13,65 +14,71 @@ namespace BAD.DataProcess
         List<decimal> sequence_of_increasing_numbers = new List<decimal>();
         List<decimal> sequence_of_decreasing_numbers = new List<decimal>();
 
+        List<decimal> temp_increase = new List<decimal>();
+        List<decimal> temp_decrease = new List<decimal>();
+
         public SequenceCounter(decimal[] data)
         {
-            data_array =data;
+            data_array=data;
+            temp_increase.Add(data_array[0]);
+            temp_decrease.Add(data_array[0]);
+            CalculateSequences();
         }
-        public void CalculateSequences(decimal[] data_array)
+        private void CalculateSequences()
         {
-            InitialListsByFirstNumber();
-            List<decimal> temp_increase = new List<decimal>();
-            List<decimal> temp_decrease = new List<decimal>();
-
-            for (int i = 0; i < data_array.Length; i++)
+            foreach (decimal number in data_array)
             {
-                if (temp_sequence_of_increase_numbers.Last() < data_array[i])
+                if (temp_decrease.Last() > number)
                 {
-                    temp_sequence_of_increase_numbers.Add(data_array[i]);
+                    temp_decrease.Add(number);
                 }
                 else
                 {
-                    ChangeFinalSequenceIfTempIsBigger();
-                    temp_sequence_of_increase_numbers.Clear();
-                    IfArrayEmptyInitialByNextNumber(temp_sequence_of_increase_numbers, data_array[i]);
+                    UpdateDecreaseSequenceIfTempLonger(number);
+                }
+
+                if (temp_increase.Last() < number)
+                {
+                    temp_increase.Add(number);
+                }
+                else
+                {
+                    UpdateIncreaseSequenceIfTempLonger(number);
                 }
             }
-            ChangeFinalSequenceIfTempIsBigger();
+            UpdateDecreaseSequenceIfTempLonger(0);
+            UpdateIncreaseSequenceIfTempLonger(0);
+
         }
-        private void InitialListsByFirstNumber()
+
+        private void UpdateIncreaseSequenceIfTempLonger(decimal number)
         {
-            sequence_of_increasing_numbers.Add(data_array[0]);
-            sequence_of_decreasing_numbers.Add(data_array[0]);
-        }
-        private void IncreaseCounter(List<decimal> temp_increase,decimal number)
-        {
-            if (temp_increase.Last() < number)
+            if (temp_increase.Count > sequence_of_increasing_numbers.Count)
             {
-                temp_increase.Add(number);
+                sequence_of_increasing_numbers = new List<decimal>(temp_increase);
             }
+            temp_increase.Clear();
+            temp_increase.Add(number);
         }
 
-        private void DecreaseCounter(decimal number)
+        private void UpdateDecreaseSequenceIfTempLonger(decimal number)
         {
-
-        }
-
-        private void ChangeFinalSequenceIfTempIsBigger()
-        {
-            if (final_sequence_of_grows_numbers.Count < temp_sequence_of_grows_numbers.Count)
+            if (temp_decrease.Count > sequence_of_decreasing_numbers.Count)
             {
-                final_sequence_of_grows_numbers = new List<decimal>(temp_sequence_of_grows_numbers);
+                sequence_of_decreasing_numbers = new List<decimal>(temp_decrease);
             }
+            temp_decrease.Clear();
+            temp_decrease.Add(number);
         }
 
         public List<decimal> ReturnIncreasingSequence()
         {
-            return final_sequence_of_increase_numbers;
+            return sequence_of_increasing_numbers;
         }
 
         public List<decimal> ReturnDecreasingSequence()
         {
-            return final_sequence_of_decrease_numbers;
+            return sequence_of_decreasing_numbers;
         }
     }
 }

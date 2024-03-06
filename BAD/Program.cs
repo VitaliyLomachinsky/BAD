@@ -3,12 +3,14 @@ using BAD.DataProcess;
 var watch = System.Diagnostics.Stopwatch.StartNew();
 
 
-FileReader file_reader =  new FileReader();
-const string file_name = "C:\\Users\\lomac\\Desktop\\10m.txt";
-string[] data_from_file = file_reader.ReadFileByName(file_name);
+FileReader file_reader = new FileReader();
+string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+string file_name = System.IO.Path.Combine(desktopPath, "10m.txt");
 
-DataAnalysis data_process = new DataAnalysis(data_from_file);
+
+DataAnalysis data_process = new DataAnalysis(file_reader.ReadFileByName(file_name));
 data_process.PrintHandledFileInfo();
 
+
 watch.Stop();
-Console.WriteLine(watch.ElapsedMilliseconds);
+Console.WriteLine("\n"+"Work in milliseconds: "+watch.ElapsedMilliseconds);

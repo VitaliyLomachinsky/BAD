@@ -17,7 +17,9 @@ namespace BAD.DataAccess
                 return lines;
             }
             catch(Exception eror) {
-                return [];
+                Console.WriteLine("You should have a file named \"10m.txt\" on your desktop.");
+                return ["1"];
+               
             }
         }
     }
